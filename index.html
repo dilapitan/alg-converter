@@ -1,0 +1,90 @@
+<!--
+
+Creator: Dominic I. Lapitan
+Program: a simple web app that reverses a given speedcube algorithm using Anuglar 1 and Semantic UI
+Sources: API/w3schools
+
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Algorithm Converter</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.css">
+</head>
+<body ng-app="myApp">
+
+	<div class="ui container" ng-controller="myCtrl">
+		
+		<div class="ui grid">
+			
+			<div class="four wide column"></div>
+			<div class="eight wide column">
+				<br>
+				<h1>Algorithm Converter</h1>
+				<div class="ui form">
+				<input ng-model="alg" type="text" placeholder="Enter algorithm here" /> <!-- input algorithm here-->
+				</div>
+				
+				<br><br>
+				<button class="ui blue button" ng-click="convert()">CONVERT</button> <!-- convert the algorithm to its reverse-->
+				<button class="ui grey button" ng-click="reset()">RESET</button> <!-- resetting the input field-->
+				<h2> Initial Alg: {{ init }}</h2> <!-- show the initial algorithm -->
+				<h2> Reversed Alg: {{ converted }} </h2> <!-- show the converted algorithm -->
+				</div>
+			<div class="four column"></div>
+
+			
+			
+		
+		</div>
+		
+	</div>
+
+	<script>
+		angular.module('myApp', [])
+			.controller('myCtrl', ['$scope', function($scope) {
+				
+				$scope.converted = ""; // converted alg
+				$scope.convert = function() { // convert alg here to its reverse
+					
+					var i; 
+					var length = ($scope.alg).length;
+					var reversed = "";
+
+					for (i = (length-1); i > -1; i--) {
+						if (($scope.alg)[i] == "'") { // ignoring ' character
+							continue;
+						}
+						else if (($scope.alg)[i] == " ") { // if space, then just add space
+							reversed += " ";
+						}
+						else if (($scope.alg)[i] == "(") { // reversing parenthesis
+							reversed += ")";
+						}
+						else if (($scope.alg)[i] == ")") { // reversing parenthesis
+							reversed += "(";
+						}
+						else { 
+							reversed += ($scope.alg)[i]; 
+							if ((($scope.alg)[i+1]) != "'") { // adds ' if initial move is without '
+								reversed += "'";	
+							}
+						}
+					}
+
+					// showing the outputs
+					$scope.init = $scope.alg;
+					$scope.converted = reversed;
+				}
+
+				$scope.reset = function() {
+					// resetting things
+					$scope.init = "";
+					$scope.converted = "";
+				}
+			}]);
+	</script>
+</body>
+</html>
